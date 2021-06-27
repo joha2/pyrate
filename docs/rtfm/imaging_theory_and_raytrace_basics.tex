@@ -181,7 +181,7 @@ including, but not limited to, the implied warranties of merchantability and fit
 There is no warranty for accuracy, absence of errors, or any relation between real world objects and simulations made 
 using this manual or program code based on it.
 Using this manual does not replace your own investigations and analyses using proper (non-pyrate) sources. 
-The copyright holders warn you that on-screen and/or printed versions of this manual may emit bosonic particles at speeds of 299792458\,m/s.
+The copyright holders warn you that on-screen and/or printed versions of this manual may emit bosonic particles at speeds of up to 299792458\,m/s.
 
 \chapter{Optics from Maxwell Equations}
 \section{Unit Systems}
@@ -206,21 +206,21 @@ discovered that a change of magnetic flux induces voltages in conductors.
  \Nabla \times \Efield + a_3 \dot{\Bfield} = 0
 \end{eqnarray}
 \paragraph{Maxwell} 
-unified the laws of electricity, magnetics and electrodynamics to the famous set of equations
+unified the laws of electricity, magnetics and electrodynamics to the famous set of equations that are
 \begin{eqnarray}
  \Nabla \Efield &=& 4 \pi a_1 \chargedensity \\
  \Nabla \times \Bfield &=& 4 \pi \frac{a_2}{a_3} \currentdensity + \frac{a_2}{a_1 a_3} \dot{\Efield} \\
  \Nabla \times \Efield &=& - a_3 \dot{\Bfield} \\
  \Nabla \Bfield &=& 0
 \end{eqnarray}
-which holds in vacuum in this form.
+in vacuum.
 All these proportionalities are experimentally proven.
-The proportionality factors, however, cannot be defined by a purely mechanical unit system and may be freely chosen, 
+The proportionality factors, however, cannot be defined by a purely mechanical unit system. We may choose them arbitrarily,
 as long as $a_1 = a_2 c_0^2$.
 As humans have no intuitive way to experience magnetic fields with their senses,
 there is no obvious choice.
-Historically, several choices have been proposed.
-Some common choices are
+Historically, several choices have been proposed to ease calculations.
+Some common ones are
 
 \begin{tabular}{l|lll}
                        & $a_1$\qquad\qquad                    & $a_2$\qquad\qquad                  & $a_3$ \\
@@ -433,8 +433,8 @@ This result is visualised in figure \ref{fig:poynting}.
 \begin{figure}
   \centering
    \includegraphics[width=0.35\columnwidth]{graphics/poynting}
-  \caption{a) In general, the direction of the Poynting vector is the real projection of a weighted sum of the directions of $\Wavevector$ and $\Efield$. b)
-In the special case when both are orthogonal, $ \scalarEfield_\ell \wavenumber_\ell = 0$, the Poynting vector points in the direction of the wavevector.
+  \caption{a) In general, the direction of the Poynting vector is the real projection of a weighted sum of $\Wavevector$ and $\Efield$. b)
+In the special case when both are orthogonal, $ \scalarEfield_\ell \wavenumber_\ell = 0$, the Poynting vector points in the direction of $\Re\Wavevector$.
 }
   \label{fig:poynting}
 \end{figure}
@@ -690,6 +690,24 @@ This manual does not cover materials with non-vacuum permeabilities so far.
 \subsection{Uniaxial anisotropic, homogeneous media}
 \remark{todo: this section needs some updates to fit the rewrite of the general dispersion section: so far, it does not allow complex values in all k components. A starting point could be \ref{eq:uniaxialDispersion}.}
 \remark{todo: subsection on k perturbation in this special case}
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \draw (0, 0) node[inner sep=0] {\includegraphics[width=0.3\columnwidth]{graphics/dispersion_isotropic}};
+    \draw (4.5, 0) node[inner sep=0] {\includegraphics[width=0.3\columnwidth]{graphics/dispersion_kinplane}};
+    \draw (-2.1, -1) node {a)};
+    \draw (2.4, -1) node {b)};
+  \end{tikzpicture}
+  \caption{2D cut through the phase space,
+           where the wavevector is zero in all dimensions not shown.
+           a) Wavevectors fulfilling the dispersion relation (blue) in an isotropic lossless medium. The dispersion is fulfilled on a sphere.
+           b) Uniaxial anisotropic lossless medium. 
+              The ordininary mode (blue) behaves like an isotropic mode, 
+              while the extraordinary mode (orange) is elliptical.
+              For a given $\wavenumber_x$ component (green),
+              there are 4 intersections, that is, 4 unique solutions to the dispersion relation.}
+  \label{fig:disperion_isotropic_and_uniaxial}
+\end{figure}
 Uniaxial anisotropic media are media with one axis along which the permittivity takes an extraordinary value, 
 and a degenerate permittivity along the other two directions in space.
 The direction along which the extraordinary permittivity occurs is often called \emph{optical axis}. 
@@ -868,7 +886,6 @@ In general, the dispersion is quartic and allows for 4 solutions in each medium.
     \draw (-2.1, -1) node {a)};
     \draw (2.4, -1) node {b)};
   \end{tikzpicture}
-  
   \caption{a) Wavevectors with the same in-plane component.
            b) Scenario of a single incident plane wave.}
   \label{fig:boundary_wavevectors}
