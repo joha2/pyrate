@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<package format="1" xmlns="http://freecad.org/metadata">
+  <name>pyrate</name>
+  <description>pyrate - Optical Raytracing with Python</description>
+  <version>0.4.0</version>
+  <maintainer email="moritz.esslinger@web.de">Moritz Esslinger</maintainer>
+  <maintainer email="joha2@gmx.net">Johannes Hartung</maintainer>
+  <license file="LICENSE.txt">GPLv2</license>
+  <url type="repository" branch="master">https://salsa.debian.org/mess42/pyrate</url>
+  <icon>freecad/PyrateWorkbench/Gui/Resources/icons/pyrate_logo_icon.svg</icon>
+  <comment>Please use git clone --recursive ... to obtain the material database</comment>
+
+  <content>
+    <workbench>
+      <classname>PyrateWorkbench</classname>
+      <tag>optical design</tag>
+      <tag>optimizaton</tag>
+      <tag>different media</tag>
+      <freecadmin>0.18.1</freecadmin>
+      <freecadmax>0.20.0</freecadmax>
+    </workbench>
+  </content>
+
+</package>
+
