@@ -13,6 +13,7 @@
 *.bbl
 *.synctex.gz
 *.blg
+*.swp
 result_images/
 .hypothesis/
 .coverage

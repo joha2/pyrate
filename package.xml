@@ -7,12 +7,11 @@
   <maintainer email="joha2@gmx.net">Johannes Hartung</maintainer>
   <license file="LICENSE.txt">GPLv2</license>
   <url type="repository" branch="master">https://salsa.debian.org/mess42/pyrate</url>
-  <icon>freecad/PyrateWorkbench/Gui/Resources/icons/pyrate_logo_icon.svg</icon>
-  <comment>Please use git clone --recursive ... to obtain the material database</comment>
 
   <content>
     <workbench>
       <classname>PyrateWorkbench</classname>
+      <icon>freecad/PyrateWorkbench/Gui/Resources/icons/pyrate_logo_icon.svg</icon>
       <tag>optical design</tag>
       <tag>optimizaton</tag>
       <tag>different media</tag>
