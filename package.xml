@@ -10,6 +10,7 @@
 
   <content>
     <workbench>
+      <name>Optical Design (pyrate)</name>
       <classname>PyrateWorkbench</classname>
       <icon>freecad/PyrateWorkbench/Gui/Resources/icons/pyrate_logo_icon.svg</icon>
       <tag>optical design</tag>
