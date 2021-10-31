@@ -15,6 +15,7 @@
 *.blg
 result_images/
 .hypothesis/
+.coverage
 
 # Packages
 *.egg
