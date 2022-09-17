@@ -516,7 +516,7 @@ It does not provide enough information for the 4 remaining degrees of freedom in
 Thus, it is impossible to find a unique solution without further knowledge about $\Wavevector$.
 
 \subsubsection{Problem 1: Two components are known}
-
+\label{subsubsec:two_components_known}
 We assume two of the three cartesian components of $\Wavevector$ are known.
 We decompose $\Wavevector$ into a plane of known components $\Wavevector_\parallel$ and the unknown component $\wavenumber_\perp$. 
 A detailed discussion how to calculate the unknown component from the dispersion relation
@@ -698,8 +698,8 @@ This manual does not cover materials with non-vacuum permeabilities so far.
     \draw (-2.1, -1) node {a)};
     \draw (2.4, -1) node {b)};
   \end{tikzpicture}
-  \caption{2D cut through the phase space,
-           where the wavevector is zero in all dimensions not shown.
+  \caption{2D cuts through the phase space.
+           In these plots, the wavevector is zero in all dimensions not shown.
            a) Wavevectors fulfilling the dispersion relation (blue) in an isotropic lossless medium. The dispersion is fulfilled on a sphere.
            b) Uniaxial anisotropic lossless medium. 
               The ordininary mode (blue) behaves like an isotropic mode, 
@@ -836,6 +836,205 @@ we replace $E_z \rightarrow E_i e_{\eo, i}$ and find
   \right]
 \end{eqnarray}
 
+\section{Plane Wave Dispersion in 4 Field Component Representation}
+An alternative to the full vectorial description above 
+is to employ only a subset of field components,
+containing all information.
+This decription is equivalent to the one above.
+
+In particular, we represent the fields by 2 electric and 2 magnetic field components, in $x,y$ direction. 
+That is, we use $(\scalarEfield_x, \scalarEfield_y, \scalarHfield_x, \scalarHfield_y)$. 
+The downside of dropping the $z$ component is that waves with polarisations purely in that direction cannot be represented,
+and waves with a dominant field in $z$ may suffer numerical issues.
+The coordinate system should be chosen such that these waves are not in a region of interest. For example, for a plane glass plate, the $z$ direction can be chosen in surface normal direction. This way, any polarisation dominated by the $z$ component in $\Efield$ or $\Hfield$ is under grazing incidence. 
+And grazing incidence is often not of particular interest, due to its low surface transmission.
+In cases where there is special interest in close-to-grazing waves in one direction, the coordinate system should be chosen differently.
+
+\subsection{From Maxwell Equations to the 4 Component Dispersion}
+We start with the source-free curl equations \ref{eq:sourcefreemaxwell_rotE} and \ref{eq:sourcefreemaxwell_rotH} in cartesian components
+
+\begin{subequations}
+  \begin{eqnarray}
+    \partial_y \scalarEfield_z - \partial_z \scalarEfield_y &=& i \omega \vacuumpermeability \scalarHfield_x
+    \\
+    \partial_z \scalarEfield_x - \partial_x \scalarEfield_z &=& i \omega \vacuumpermeability \scalarHfield_y
+    \\
+    \partial_x \scalarEfield_y - \partial_y \scalarEfield_x &=& i \omega \vacuumpermeability \scalarHfield_z
+    \\
+    \partial_y \scalarHfield_z - \partial_z \scalarHfield_y &=& -i \omega
+      \left( 
+        \scalarpermittivity_{xx} \scalarEfield_x + 
+        \scalarpermittivity_{xy} \scalarEfield_y +
+        \scalarpermittivity_{xz} \scalarEfield_z
+      \right)
+    \\
+    \partial_z \scalarHfield_x - \partial_x \scalarHfield_z &=& -i \omega 
+      \left( 
+        \scalarpermittivity_{yx} \scalarEfield_x + 
+        \scalarpermittivity_{yy} \scalarEfield_y +
+        \scalarpermittivity_{yz} \scalarEfield_z
+      \right)
+    \\
+    \partial_x \scalarHfield_y - \partial_y \scalarHfield_x &=& -i \omega  
+      \left( 
+        \scalarpermittivity_{zx} \scalarEfield_x + 
+        \scalarpermittivity_{zy} \scalarEfield_y +
+        \scalarpermittivity_{zz} \scalarEfield_z
+      \right)
+  \end{eqnarray}
+\end{subequations}
+We solve the third and the last equation for the $z$ component
+\begin{eqnarray}
+   \scalarHfield_z &=&   
+     \frac{ \partial_x \scalarEfield_y - \partial_y \scalarEfield_x }
+          { i \omega \vacuumpermeability } 
+     \\
+     \scalarEfield_z
+     &=&
+     \frac{ \partial_x \scalarHfield_y - \partial_y \scalarHfield_x}
+          { -i \omega \scalarpermittivity_{zz} }
+     - \frac{\scalarpermittivity_{zx}}{\scalarpermittivity_{zz}} \scalarEfield_x
+     - \frac{\scalarpermittivity_{zy}}{\scalarpermittivity_{zz}} \scalarEfield_y
+\end{eqnarray}
+The latter 3 equations all would have contained $\Efield_z$,
+and we chose the last one hoping that dividing by $\scalarpermittivity_{zz}$ is no division by zero. We use these 2 equations to substitute the $z$ field components in the other 4 equations
+\begin{subequations}
+  \begin{eqnarray}
+   \partial_z \scalarEfield_y &=& 
+       - i \omega \vacuumpermeability \scalarHfield_x
+       + \partial_y \left( 
+        \frac{ \partial_x \scalarHfield_y - \partial_y \scalarHfield_x}
+            { -i \omega \scalarpermittivity_{zz} }
+        - \frac{\scalarpermittivity_{zx}}{\scalarpermittivity_{zz}} \scalarEfield_x
+        - \frac{\scalarpermittivity_{zy}}{\scalarpermittivity_{zz}} \scalarEfield_y
+     \right) 
+    \\
+    \partial_z \scalarEfield_x 
+    &=& +i \omega \vacuumpermeability \scalarHfield_y
+    + \partial_x \left( 
+        \frac{ \partial_x \scalarHfield_y - \partial_y \scalarHfield_x}
+            { -i \omega \scalarpermittivity_{zz} }
+        - \frac{\scalarpermittivity_{zx}}{\scalarpermittivity_{zz}} \scalarEfield_x
+        - \frac{\scalarpermittivity_{zy}}{\scalarpermittivity_{zz}} \scalarEfield_y
+    \right)
+    \\
+    \partial_z \scalarHfield_y &=& +i \omega
+      \left( 
+        \scalarpermittivity_{xx} \scalarEfield_x + 
+        \scalarpermittivity_{xy} \scalarEfield_y +
+        \scalarpermittivity_{xz} 
+        \left(
+            \frac{ \partial_x \scalarHfield_y - \partial_y \scalarHfield_x}
+                { -i \omega \scalarpermittivity_{zz} }
+            - \frac{\scalarpermittivity_{zx}}{\scalarpermittivity_{zz}} \scalarEfield_x
+            - \frac{\scalarpermittivity_{zy}}{\scalarpermittivity_{zz}} \scalarEfield_y
+        \right)
+      \right)
+      + \partial_y \frac{ \partial_x \scalarEfield_y - \partial_y \scalarEfield_x }
+          { i \omega \vacuumpermeability } 
+    \nonumber\\ \\
+    \partial_z \scalarHfield_x &=& -i \omega 
+      \left( 
+        \scalarpermittivity_{yx} \scalarEfield_x + 
+        \scalarpermittivity_{yy} \scalarEfield_y +
+        \scalarpermittivity_{yz} 
+        \left(
+            \frac{ \partial_x \scalarHfield_y - \partial_y \scalarHfield_x}
+            { -i \omega \scalarpermittivity_{zz} }
+            - \frac{\scalarpermittivity_{zx}}{\scalarpermittivity_{zz}} \scalarEfield_x
+            - \frac{\scalarpermittivity_{zy}}{\scalarpermittivity_{zz}} \scalarEfield_y
+        \right)
+      \right)
+      +  \partial_x \frac{ \partial_x \scalarEfield_y - \partial_y \scalarEfield_x }
+          { i \omega \vacuumpermeability }
+    \nonumber\\
+  \end{eqnarray}
+\end{subequations}
+We assume homogeneous media, $\partial_i \permittivity = 0$, 
+so the derivates act on the fields, only.
+We rewrite this set of linear equations in matrix form
+\begin{eqnarray}
+   \partial_z 
+     \begin{pmatrix} 
+     \scalarEfield_x \\ \scalarEfield_y  \\ \scalarHfield_x \\ \scalarHfield_y \end{pmatrix}
+   &=&
+        \Tensor{W}
+     \begin{pmatrix} 
+     \scalarEfield_x \\ \scalarEfield_y  \\ \scalarHfield_x \\ \scalarHfield_y \end{pmatrix}
+\end{eqnarray}
+with
+\begin{eqnarray}
+  \Tensor{W} &=& 
+       \begin{pmatrix}
+         - \frac{\scalarpermittivity_{zx}}{\scalarpermittivity_{zz}} \partial_x
+         & 
+         - \frac{\scalarpermittivity_{zy}}{\scalarpermittivity_{zz}} \partial_x
+         &  
+         \frac{\partial_x\partial_y}{ i \omega \scalarpermittivity_{zz} }
+         & 
+         i \omega \vacuumpermeability - \frac{ \partial^2_x }{ i \omega \scalarpermittivity_{zz} }
+      \\
+         - \frac{\scalarpermittivity_{zx}}{\scalarpermittivity_{zz}} \partial_y
+         &
+         - \frac{\scalarpermittivity_{zy}}{\scalarpermittivity_{zz}} \partial_y
+         & 
+         - i \omega \vacuumpermeability + \frac{ \partial^2_y }{i \omega \scalarpermittivity_{zz} } 
+         & 
+         -\frac{ \partial_x \partial_y}{ i \omega \scalarpermittivity_{zz} }
+      \\
+         i \omega \left(
+             \frac{\scalarpermittivity_{yz}\scalarpermittivity_{zx}}{\scalarpermittivity_{zz}}
+             - \scalarpermittivity_{yx}
+         \right)
+         -\frac{ \partial_x \partial_y }{ i \omega \vacuumpermeability }  
+         & 
+         i \omega \left(
+          \frac{\scalarpermittivity_{yz}\scalarpermittivity_{zy}}{\scalarpermittivity_{zz}} 
+         - \scalarpermittivity_{yy}
+         \right)
+         + \frac{ \partial^2_x }{ i \omega \vacuumpermeability }
+         & 
+         -  \frac{ \scalarpermittivity_{yz} }{    \scalarpermittivity_{zz} }\partial_y
+         & 
+            \frac{ \scalarpermittivity_{yz} }{  \scalarpermittivity_{zz} }\partial_x
+      \\
+         i \omega 
+         \left( 
+            \scalarpermittivity_{xx}  
+            - \scalarpermittivity_{xz} \frac{\scalarpermittivity_{zx}}{\scalarpermittivity_{zz}} 
+         \right)
+         - \frac{ \partial^2_y }{ i \omega \vacuumpermeability } 
+         & 
+         i \omega 
+         \left(
+             \scalarpermittivity_{xy} 
+             - \scalarpermittivity_{xz} \frac{\scalarpermittivity_{zy}}{\scalarpermittivity_{zz}}
+         \right)
+               +  \frac{ \partial_x \partial_y }{ i \omega \vacuumpermeability }
+         & 
+         \frac{ \scalarpermittivity_{xz} }{ \scalarpermittivity_{zz} } \partial_y
+         & 
+         -  \frac{ \scalarpermittivity_{xz} }{ \scalarpermittivity_{zz} }\partial_x
+      \\
+     \end{pmatrix}
+     \nonumber\\
+ \end{eqnarray}
+ We use a plane wave ansatz
+ $\Efield, \Hfield \propto \exp(i\Wavevector\Location)$
+ and can replace the derivatives by factors
+ $\partial_\ell \rightarrow i \wavenumber_\ell$.
+ We find an eigenvalue equation
+ \begin{eqnarray}
+   \left( \Tensor{W} - i \wavenumber_z \right)
+     \begin{pmatrix} 
+     \scalarEfield_x \\ \scalarEfield_y  \\ \scalarHfield_x \\ \scalarHfield_y \end{pmatrix}
+     &=& 0
+\end{eqnarray}
+with eigenvalues $i \wavenumber_z$ for given in-plane wavevector components $\wavenumber_x, \wavenumber_y$.
+From the previous section \ref{subsubsec:two_components_known}, we know there are 4 solutions, so the matrix $\Tensor{W}$ is of full rank.
+Any linear combination of solutions can be represented with these 4 components
+$(\scalarEfield_x, \scalarEfield_y, \scalarHfield_x, \scalarHfield_y)$,
+and any combination of these 4 components can be decomposed into amplitudes of the respective eigenmodes $\wavenumber_z$.
 
 
 \section{Boundary Conditions}
