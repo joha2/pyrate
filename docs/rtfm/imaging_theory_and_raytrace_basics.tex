@@ -516,7 +516,7 @@ It does not provide enough information for the 4 remaining degrees of freedom in
 Thus, it is impossible to find a unique solution without further knowledge about $\Wavevector$.
 
 \subsubsection{Problem 1: Two components are known}
-
+\label{subsubsec:two_components_known}
 We assume two of the three cartesian components of $\Wavevector$ are known.
 We decompose $\Wavevector$ into a plane of known components $\Wavevector_\parallel$ and the unknown component $\wavenumber_\perp$. 
 A detailed discussion how to calculate the unknown component from the dispersion relation
@@ -698,8 +698,8 @@ This manual does not cover materials with non-vacuum permeabilities so far.
     \draw (-2.1, -1) node {a)};
     \draw (2.4, -1) node {b)};
   \end{tikzpicture}
-  \caption{2D cut through the phase space,
-           where the wavevector is zero in all dimensions not shown.
+  \caption{2D cuts through the phase space.
+           In these plots, the wavevector is zero in all dimensions not shown.
            a) Wavevectors fulfilling the dispersion relation (blue) in an isotropic lossless medium. The dispersion is fulfilled on a sphere.
            b) Uniaxial anisotropic lossless medium. 
               The ordininary mode (blue) behaves like an isotropic mode, 
@@ -835,7 +835,6 @@ we replace $E_z \rightarrow E_i e_{\eo, i}$ and find
         (\scalarEfield_m e_{\eo,m}) (\wavenumber_n e_{\eo,n}) \overline{\scalarEfield}_j
   \right]
 \end{eqnarray}
-
 
 
 \section{Boundary Conditions}
@@ -1305,6 +1304,353 @@ We can calculate reflection and refraction wavevectors and their Fresnel coeffic
        The Fresnel coefficients determine the amplitude of each mode $\beta\alpha$ 
        and allow to calculate the amount of energy transferred into each mode.
 \end{enumerate}
+
+
+\section{Transfer Matrix Method}
+
+The transfer matrix method is used to describe the propagation of light through a stack of plane parallel surfaces.
+It considers multiple internal reflections in the stack and allows for easy calculation of transmission and reflection of such stacks.
+
+Compared to the full vectorial description above,
+it employs only a subset of field components.
+In particular, we represent the fields by 2 electric and 2 magnetic field components, in $x,y$ direction. 
+That is, we use $(\scalarEfield_x, \scalarEfield_y, \scalarHfield_x, \scalarHfield_y)$. 
+The downside of dropping the $z$ component is that waves with polarisations purely in that direction cannot be represented,
+and waves with a dominant field in $z$ may suffer numerical issues.
+The coordinate system is chosen with $z$ in surface normal direction. This way, any polarisation dominated by the $z$ component in $\Efield$ or $\Hfield$ is under grazing incidence. 
+In cases where grazing incidence plays an important role, this method might not be the optimal choice.
+
+\subsection{Dispersion in 4 Component Notation}
+This section reproduces the derivation from \cite{empossible:lecture_2a_tmm} and adapts it to our nomenclature.
+We start with the source-free curl equations \ref{eq:sourcefreemaxwell_rotE} and \ref{eq:sourcefreemaxwell_rotH} in cartesian components
+
+\begin{subequations}
+  \begin{eqnarray}
+    \partial_y \scalarEfield_z - \partial_z \scalarEfield_y &=& i \omega \vacuumpermeability \scalarHfield_x
+    \\
+    \partial_z \scalarEfield_x - \partial_x \scalarEfield_z &=& i \omega \vacuumpermeability \scalarHfield_y
+    \\
+    \partial_x \scalarEfield_y - \partial_y \scalarEfield_x &=& i \omega \vacuumpermeability \scalarHfield_z
+    \\
+    \partial_y \scalarHfield_z - \partial_z \scalarHfield_y &=& -i \omega
+      \left( 
+        \scalarpermittivity_{xx} \scalarEfield_x + 
+        \scalarpermittivity_{xy} \scalarEfield_y +
+        \scalarpermittivity_{xz} \scalarEfield_z
+      \right)
+    \\
+    \partial_z \scalarHfield_x - \partial_x \scalarHfield_z &=& -i \omega 
+      \left( 
+        \scalarpermittivity_{yx} \scalarEfield_x + 
+        \scalarpermittivity_{yy} \scalarEfield_y +
+        \scalarpermittivity_{yz} \scalarEfield_z
+      \right)
+    \\
+    \partial_x \scalarHfield_y - \partial_y \scalarHfield_x &=& -i \omega  
+      \left( 
+        \scalarpermittivity_{zx} \scalarEfield_x + 
+        \scalarpermittivity_{zy} \scalarEfield_y +
+        \scalarpermittivity_{zz} \scalarEfield_z
+      \right)
+  \end{eqnarray}
+\end{subequations}
+We solve the third and the last equation for the $z$ component
+\begin{eqnarray}
+   \scalarHfield_z &=&   
+     \frac{ \partial_x \scalarEfield_y - \partial_y \scalarEfield_x }
+          { i \omega \vacuumpermeability }
+    \label{eq:transfer_matrix_Hz}
+     \\
+     \scalarEfield_z
+     &=&
+     \frac{ \partial_x \scalarHfield_y - \partial_y \scalarHfield_x}
+          { -i \omega \scalarpermittivity_{zz} }
+     - \frac{\scalarpermittivity_{zx}}{\scalarpermittivity_{zz}} \scalarEfield_x
+     - \frac{\scalarpermittivity_{zy}}{\scalarpermittivity_{zz}} \scalarEfield_y
+\end{eqnarray}
+The latter 3 equations all would have contained $\Efield_z$,
+and we chose the last one hoping that dividing by $\scalarpermittivity_{zz}$ is no division by zero. We use these 2 equations to substitute the $z$ field components in the other 4 equations
+\begin{subequations}
+  \begin{eqnarray}
+   \partial_z \scalarEfield_y &=& 
+       - i \omega \vacuumpermeability \scalarHfield_x
+       + \partial_y \left( 
+        \frac{ \partial_x \scalarHfield_y - \partial_y \scalarHfield_x}
+            { -i \omega \scalarpermittivity_{zz} }
+        - \frac{\scalarpermittivity_{zx}}{\scalarpermittivity_{zz}} \scalarEfield_x
+        - \frac{\scalarpermittivity_{zy}}{\scalarpermittivity_{zz}} \scalarEfield_y
+     \right) 
+    \\
+    \partial_z \scalarEfield_x 
+    &=& +i \omega \vacuumpermeability \scalarHfield_y
+    + \partial_x \left( 
+        \frac{ \partial_x \scalarHfield_y - \partial_y \scalarHfield_x}
+            { -i \omega \scalarpermittivity_{zz} }
+        - \frac{\scalarpermittivity_{zx}}{\scalarpermittivity_{zz}} \scalarEfield_x
+        - \frac{\scalarpermittivity_{zy}}{\scalarpermittivity_{zz}} \scalarEfield_y
+    \right)
+    \\
+    \partial_z \scalarHfield_y &=& +i \omega
+      \left( 
+        \scalarpermittivity_{xx} \scalarEfield_x + 
+        \scalarpermittivity_{xy} \scalarEfield_y +
+        \scalarpermittivity_{xz} 
+        \left(
+            \frac{ \partial_x \scalarHfield_y - \partial_y \scalarHfield_x}
+                { -i \omega \scalarpermittivity_{zz} }
+            - \frac{\scalarpermittivity_{zx}}{\scalarpermittivity_{zz}} \scalarEfield_x
+            - \frac{\scalarpermittivity_{zy}}{\scalarpermittivity_{zz}} \scalarEfield_y
+        \right)
+      \right)
+      + \partial_y \frac{ \partial_x \scalarEfield_y - \partial_y \scalarEfield_x }
+          { i \omega \vacuumpermeability } 
+    \nonumber\\ \\
+    \partial_z \scalarHfield_x &=& -i \omega 
+      \left( 
+        \scalarpermittivity_{yx} \scalarEfield_x + 
+        \scalarpermittivity_{yy} \scalarEfield_y +
+        \scalarpermittivity_{yz} 
+        \left(
+            \frac{ \partial_x \scalarHfield_y - \partial_y \scalarHfield_x}
+            { -i \omega \scalarpermittivity_{zz} }
+            - \frac{\scalarpermittivity_{zx}}{\scalarpermittivity_{zz}} \scalarEfield_x
+            - \frac{\scalarpermittivity_{zy}}{\scalarpermittivity_{zz}} \scalarEfield_y
+        \right)
+      \right)
+      +  \partial_x \frac{ \partial_x \scalarEfield_y - \partial_y \scalarEfield_x }
+          { i \omega \vacuumpermeability }
+    \nonumber\\
+  \end{eqnarray}
+\end{subequations}
+We assume homogeneous media, $\partial_i \permittivity = 0$, 
+so the derivates act on the fields, only.
+We rewrite this set of linear equations in matrix form
+\begin{eqnarray}
+   \partial_z 
+     \begin{pmatrix} 
+     \scalarEfield_x \\ \scalarEfield_y  \\ \scalarHfield_x \\ \scalarHfield_y \end{pmatrix}
+   &=&
+        \Tensor{W}
+     \begin{pmatrix} 
+     \scalarEfield_x \\ \scalarEfield_y  \\ \scalarHfield_x \\ \scalarHfield_y \end{pmatrix}
+\end{eqnarray}
+with
+\begin{eqnarray}
+  \Tensor{W} &=& 
+       \begin{pmatrix}
+         - \frac{\scalarpermittivity_{zx}}{\scalarpermittivity_{zz}} \partial_x
+         & 
+         - \frac{\scalarpermittivity_{zy}}{\scalarpermittivity_{zz}} \partial_x
+         &  
+         \frac{\partial_x\partial_y}{ i \omega \scalarpermittivity_{zz} }
+         & 
+         i \omega \vacuumpermeability - \frac{ \partial^2_x }{ i \omega \scalarpermittivity_{zz} }
+      \\
+         - \frac{\scalarpermittivity_{zx}}{\scalarpermittivity_{zz}} \partial_y
+         &
+         - \frac{\scalarpermittivity_{zy}}{\scalarpermittivity_{zz}} \partial_y
+         & 
+         - i \omega \vacuumpermeability + \frac{ \partial^2_y }{i \omega \scalarpermittivity_{zz} } 
+         & 
+         -\frac{ \partial_x \partial_y}{ i \omega \scalarpermittivity_{zz} }
+      \\
+         i \omega \left(
+             \frac{\scalarpermittivity_{yz}\scalarpermittivity_{zx}}{\scalarpermittivity_{zz}}
+             - \scalarpermittivity_{yx}
+         \right)
+         -\frac{ \partial_x \partial_y }{ i \omega \vacuumpermeability }  
+         & 
+         i \omega \left(
+          \frac{\scalarpermittivity_{yz}\scalarpermittivity_{zy}}{\scalarpermittivity_{zz}} 
+         - \scalarpermittivity_{yy}
+         \right)
+         + \frac{ \partial^2_x }{ i \omega \vacuumpermeability }
+         & 
+         -  \frac{ \scalarpermittivity_{yz} }{    \scalarpermittivity_{zz} }\partial_y
+         & 
+            \frac{ \scalarpermittivity_{yz} }{  \scalarpermittivity_{zz} }\partial_x
+      \\
+         i \omega 
+         \left( 
+            \scalarpermittivity_{xx}  
+            - \scalarpermittivity_{xz} \frac{\scalarpermittivity_{zx}}{\scalarpermittivity_{zz}} 
+         \right)
+         - \frac{ \partial^2_y }{ i \omega \vacuumpermeability } 
+         & 
+         i \omega 
+         \left(
+             \scalarpermittivity_{xy} 
+             - \scalarpermittivity_{xz} \frac{\scalarpermittivity_{zy}}{\scalarpermittivity_{zz}}
+         \right)
+               +  \frac{ \partial_x \partial_y }{ i \omega \vacuumpermeability }
+         & 
+         \frac{ \scalarpermittivity_{xz} }{ \scalarpermittivity_{zz} } \partial_y
+         & 
+         -  \frac{ \scalarpermittivity_{xz} }{ \scalarpermittivity_{zz} }\partial_x
+      \\
+     \end{pmatrix}
+     \nonumber\\
+ \end{eqnarray}
+ We use a plane wave ansatz
+ $\Efield, \Hfield \propto \exp(i\Wavevector\Location)$
+ and can replace the derivatives by factors
+ $\partial_\ell \rightarrow i \wavenumber_\ell$.
+ We find an eigenvalue equation
+ \begin{eqnarray}
+   \left( \Tensor{W} - i \wavenumber_z \right)
+     \begin{pmatrix} 
+     \scalarEfield_x \\ \scalarEfield_y  \\ \scalarHfield_x \\ \scalarHfield_y \end{pmatrix}
+     &=& 0
+  \\
+     \left( - i \Tensor{W} - \wavenumber_z \right)
+     \begin{pmatrix} 
+     \scalarEfield_x \\ \scalarEfield_y  \\ \scalarHfield_x \\ \scalarHfield_y \end{pmatrix}
+     &=& 0
+\end{eqnarray}
+with eigenvalues $\wavenumber_z$ for given in-plane wavevector components $\wavenumber_x, \wavenumber_y$.
+From the previous section \ref{subsubsec:two_components_known}, we know there are 4 solutions, so the matrix $\Tensor{W}$ is of full rank.
+
+\subsection{Free Space Propagation}
+\label{subsec:transfer_matrix_freespace_prop}
+Assume we have given, arbitrary field components in one plane. We are interested in the propagation of these fields to another plane. First we decompose the field components into a superposition of dispersion polarisation eigenvectors
+\begin{eqnarray}
+  \begin{pmatrix}
+    \scalarEfield_x \\ \scalarEfield_y \\ \scalarHfield_x \\ \scalarHfield_y
+  \end{pmatrix}
+  &=&
+  \sum_j a_j
+  \begin{pmatrix}
+    \scalarEfield_{x\,eig\,j} \\ \scalarEfield_{y\,eig\,j} \\ \scalarHfield_{x\,eig\,j} \\ \scalarHfield_{y\,eig\,j}
+  \end{pmatrix}  
+\end{eqnarray}
+with amplitudes $a_j$.
+We abbreviate the 4-component vector $\Vector{F}  = (\scalarEfield_x, \scalarEfield_y, \scalarHfield_x, \scalarHfield_y)$ and yield
+\begin{eqnarray}
+  \Vector{F} &=& \sum_j a_j \Vector{F}_{eig\,j}
+\\
+  \Vector{F} &=& \begin{pmatrix}
+                    \scalarEfield_{x\,eig\,1} & \scalarEfield_{y\,eig\,1} & \scalarHfield_{x\,eig\,1} & \scalarHfield_{y\,eig\,1} \\
+                    \scalarEfield_{x\,eig\,2} & \scalarEfield_{y\,eig\,2} & \scalarHfield_{x\,eig\,2} & \scalarHfield_{y\,eig\,2} \\
+                    \scalarEfield_{x\,eig\,3} & \scalarEfield_{y\,eig\,3} & \scalarHfield_{x\,eig\,3} & \scalarHfield_{y\,eig\,3} \\
+                    \scalarEfield_{x\,eig\,4} & \scalarEfield_{y\,eig\,4} & \scalarHfield_{x\,eig\,4} & \scalarHfield_{y\,eig\,4} \\                    
+                   \end{pmatrix}
+ \Vector{a}
+\\
+  \Vector{F} &=& \Tensor{F}_{eig} \Vector{a}
+\end{eqnarray}
+By inverting the eigenvector matrix, we obtain the amplitudes
+\begin{eqnarray}
+  \Vector{a} &=& \Tensor{F}^{-1}_{eig} \Vector{F}
+\end{eqnarray}
+For each eigen-polarisation, we know the propagation constant $\wavenumber_z$,
+so we can transfer the fields from a plane $z$ to another.
+\begin{eqnarray}
+  \Vector{F}(z_2) &=& \sum_j a_j(z_1) \exp\left(i \wavenumber_{zj} (z_2-z_1) \right) \Vector{F}_{eig\,j}
+  \\
+  F_\ell(z_2) &=& \sum_j a_j(z_1) \exp\left(i \wavenumber_{zj} (z_2-z_1) \right) F_{eig\,j\ell}
+  \\
+  F_\ell(z_2) &=& \left(F^{-1}_{eig}\right)_{jm} F_m(z_1) \exp\left(i \wavenumber_{zj} (z_2-z_1) \right) F_{eig\,j\ell}
+\end{eqnarray}
+which is
+\begin{eqnarray}
+  F_\ell(z_2) &=& M_{\ell m} F_m(z_1)
+  \\
+  M_{\ell m} &=& \left(F^{-1}_{eig}\right)_{jm} \exp\left(i \wavenumber_{zj} (z_2-z_1) \right) F_{eig\,j\ell}
+\end{eqnarray}
+This equation contains the propagation of all 4 eigenmodes, that is, 2 forward and 2 backward propagating modes.
+If the field at $z_1$ contains backward propagating modes, this method automatically creates backward propagating amplitudes at $z_2$ so that the sum of forward and backward propagating fields at $z_1$ matches the given values.
+
+
+\subsection{Refraction}
+We assume a plane interface with a surface normal is along the $z$ axis.
+Then the boundary conditions \ref{eq:boundary_conditions} are
+\begin{eqnarray}
+ \scalarEfield_{x\,,\materialtwo} &=& \scalarEfield_{x\,,\materialone}
+ \\
+ \scalarEfield_{y\,,\materialtwo} &=& \scalarEfield_{y\,,\materialone}
+ \\
+ \scalarHfield_{x\,,\materialtwo} &=& \scalarHfield_{x\,,\materialone}
+ \\
+ \scalarHfield_{y\,,\materialtwo} &=& \scalarHfield_{y\,,\materialone}
+\end{eqnarray}
+Refraction is performed by the unit operator.
+\begin{eqnarray}
+  \Vector{F}_\materialtwo &=& \Vector{F}_\materialone \\
+  M_{ij} &=& \delta_{ij}\\
+\end{eqnarray}
+The in-plane wavevectors are also conserved.
+\begin{eqnarray}
+  \wavenumber_{x\,,\materialtwo} &=& \wavenumber_{x\,,\materialone}\\
+  \wavenumber_{y\,,\materialtwo} &=& \wavenumber_{y\,,\materialone}
+\end{eqnarray}
+The wavevector component $\wavenumber_z$ along the normal $z$ direction is not conserved and has to be determined with the new material's dispersion.
+Material $\materialtwo$ also has different polarisation eigenmodes.
+This means that the conserved fields $\scalarEfield, \scalarHfield$
+are decomposed into a new set of amplitudes of the eigenmodes.
+
+\subsection{Stack of Multiple Layers}
+Given we have a stack of plane parallel interfaces between homogenous materials. For the propagation in each material $j$, we obtain the propagation Matrix $\Tensor{M}_j$ as described in section \ref{subsec:transfer_matrix_freespace_prop}.
+The total propagation is the product of the individual propagation operators
+\begin{eqnarray}
+  \Vector{F}_{final} &=& \Tensor{M}_{n} \cdot \Tensor{M}_{n-1} \cdot ... \cdot \Tensor{M}_{2} \cdot \Tensor{M}_{1} \cdot \Tensor{M}_{0} \cdot \Vector{F}_{start}
+  \\
+  \Vector{F}_{final} &=& \Tensor{M}_{tot} \cdot \Vector{F}_{start}
+\end{eqnarray}
+All propagators are represented by 4x4 matrices, and we can summarize them to a total 4x4 matrix $\Tensor{M}_{tot}$ by multiplication.
+
+\subsection{Reflection and Transmission Coefficients}
+We consider the amplitudes in the final plane
+\begin{eqnarray}
+ a_{final\,j} &=& \left( F^{-1}_{final\,eig} \right)_{j\ell} F_{final\,\ell}
+ \\
+ a_{final\,j} &=& \left( F^{-1}_{final\,eig} \right)_{j\ell} M_{tot\,\ell n} F_{start\,n}
+ \\
+ a_{final\,j} &=& \left( F^{-1}_{final\,eig} \right)_{j\ell} M_{tot\,\ell n} F_{start\,eig\,np} a_{start\,p}
+\end{eqnarray}
+and abrreviate
+\begin{eqnarray}
+  a_{final\,j} &=& \tilde{M}_{jp} a_{start\,p}
+\end{eqnarray}
+For each mode, we calculate the $z$-component using \ref{eq:transfer_matrix_Hz} and determine the Poynting vector \ref{eq:poyntingvector}.
+Depending on whether it poynts in $+$ or $-z$ direction, we assign a $+$ or $-$ sign to its index.
+\begin{eqnarray}
+ \Vector{a} &=& \begin{pmatrix}
+                 a_{1+} \\ a_{2+} \\ a_{3-} \\ a_{4-}
+                \end{pmatrix}
+\end{eqnarray}
+In our scenario to determine reflection and transmission coefficients, we assume no back-moving radiation in the final plane, and we assume that the incident radiation in the start plane is known (see also figure \ref{fig:boundary_wavevectors}). We assume the stack to extend in positive $z$ direction, so $z_{final} > z_{start}$ and $+z$ denotes forward propagation. We further assume that the first 2 amplitudes are forward, and the latter 2 amplitudes are backward propagating modes both in the start and final plane.
+\begin{eqnarray}
+  \Vector{a}_{final}
+  &=&
+  \begin{pmatrix}
+       a_{final\,1+} \\ a_{final\,2+} \\ 0 \\ 0
+  \end{pmatrix}
+\end{eqnarray}
+so
+\begin{eqnarray}
+ a_{final\,1+} &=& M_{1j} a_{start\,j}
+ \\
+ a_{final\,2+} &=& M_{2j} a_{start\,j}
+ \\
+ 0 &=& M_{31} a_{start\,1+}
+     + M_{32} a_{start\,2+}
+     + M_{33} a_{start\,3-}
+     + M_{34} a_{start\,4-}
+ \\
+ 0 &=& M_{41} a_{start\,1+}
+     + M_{42} a_{start\,2+}
+     + M_{43} a_{start\,3-}
+     + M_{44} a_{start\,4-}
+\end{eqnarray}
+In the last 2 equations, we have 
+2 knowns $a_{start\,1+},a_{start\,2+}$ and 
+2 unknowns $a_{start\,3-}, a_{start\,4-}$.
+This means we can solve for the reflection coefficients $a_{start\,-}$.
+With all start amplitudes $\Vector{a}_{start}$ known, 
+we can use the first 2 equations and solve for the transmission coefficients $a_{final\,+}$.
+
+With all amplitudes known, we can calculate the electric and magnetic field of each mode, including the $z$ field components \ref{eq:transfer_matrix_Hz}.
+
 
 
 \chapter{Geometrical Optics}
