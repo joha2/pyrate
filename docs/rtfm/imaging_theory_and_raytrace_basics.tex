@@ -3561,10 +3561,13 @@ This effectively reduces the problem of an intersection in three-dimensional spa
  z &= \frac{ \rho y^2}{1 + \sqrt{1 - (1+c) \rho^2 y^2}}
 \end{align}
 The solution is
+
+TODO: double check, the formulas below are likely to be incorrect.
+
 \begin{eqnarray}
-   F &=& d_z - \rho \left(  d_y y_0 + d_z z_0 (1+c) \right) \\
-   G &=& \rho ( y_0^2 + z_0^2 (1+c)) - 2 z_0 \\
-   H &=& - \rho ( 1 + c \, d_z^2 ) \\
+   F &\overset{?}{=}& d_z - \rho \left(  d_y y_0 + d_z z_0 (1+c) \right) \\
+   G &\overset{?}{=}& \rho ( y_0^2 + z_0^2 (1+c)) - 2 z_0 \\
+   H &\overset{?}{=}& - \rho ( 1 + c \, d_z^2 ) \\
    t &=& \frac{G}{ F + \sqrt{F^2 + H G} }
 \end{eqnarray}
 
@@ -3578,7 +3581,7 @@ The solution further simplifies to
 \begin{eqnarray}
    F &=& d_z - \rho \left(  d_y y_0 + d_z z_0  \right) \\
    G &=& \rho ( y_0^2 + z_0^2 ) - 2 z_0 \\
-   H &=& - \rho \\
+   H &=& - \rho (d_y^2 + d_z^2) \\
    t &=& \frac{G}{ F + \sqrt{F^2 + H G} }
 \end{eqnarray}
 
