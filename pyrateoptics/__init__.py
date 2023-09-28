@@ -79,6 +79,8 @@ accessible_shapes = {
         "shape_ZMXDLLShape": ZMXDLLShape
         }
 
+# remove annoying logging messages from matplotlib
+logging.getLogger("matplotlib.font_manager").setLevel(logging.CRITICAL)
 
 def build_rotationally_symmetric_optical_system(builduplist, **kwargs):
     """
