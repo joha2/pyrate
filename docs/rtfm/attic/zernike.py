@@ -188,20 +188,28 @@ def aberration_name(n:int, l:int) -> str:
 
 
 def full_story(n:int, l:int)-> dict:
+    j = standard_indices_to_fringe( n=n, l=l )
     polar     = zernike_polynomial_in_polar_representation(n=n,l=l)
     cartesian = zernike_polynomial_in_cartesian_representation(n=n,l=l)
+    dzdx      = sympy.diff( cartesian, sympy.Symbol("x"))
+    dzdy      = sympy.diff( cartesian, sympy.Symbol("y"))
+    print(f"j={j}, n={n}, l={l}")
     dic = {
         "name": aberration_name(n=n,l=l),
         "standard indices": (n,l),
-        "fringe index": standard_indices_to_fringe( n=n, l=l ),
+        "fringe index": j,
         "radial coefficients": zernike_radial_polynomial_coefficients(n=n,l=l).tolist(),
         "angular function": ("cos" if is_cosine( n=n,l=l) else "sin"),
         "angular frequency": angular_frequency( n=n, l=l),
         "cartesian coefficients": cartesian_coefficients_by_xy_order(n=n,l=l),
-        "polar python": str(polar),
+        "polar": str(polar),
         "polar latex": sympy.latex(polar),
-        "cartesian python": str(cartesian),
+        "cartesian": str(cartesian),
         "cartesian latex": sympy.latex(cartesian),
+        "derivative dz dx": str( dzdx ),
+        "derivative dz dx latex": sympy.latex( dzdx ),
+        "derivative dz dy": str( dzdy ),
+        "derivative dz dy latex": sympy.latex( dzdy ),
         }
     return dic
 
@@ -316,6 +324,8 @@ if __name__ == "__main__":
         tex += "        j_{fringe} &=&" + j + "\\\\\n"
         tex += "        Z_{" + n + "}^{" + l +"} = Z_{" + j +"} &=& " + story["polar latex"] + "\\\\\n"
         tex += "        Z_{" + j +"} &=& " + story["cartesian latex"] + "\n"
+        tex += "        \\frac{\\partial Z}{\\partial x} &=& " + story["derivative dz dx latex"] + "\n"
+        tex += "        \\frac{\\partial Z}{\\partial y} &=& " + story["derivative dz dy latex"] + "\n"
         tex += "    \\end{eqnarray}\n"
         tex += "    \\end{subequations}\n"
     tex += "\\end{document}\n"
