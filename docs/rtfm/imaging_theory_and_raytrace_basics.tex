@@ -1652,7 +1652,6 @@ we can use the first 2 equations and solve for the transmission coefficients $a_
 With all amplitudes known, we can calculate the electric and magnetic field of each mode, including the $z$ field components \ref{eq:transfer_matrix_Hz}.
 
 
-
 \chapter{Geometrical Optics}
 In geometrical optics, we assume that radiation is propagated in rays. Rays are thin, collimated beams. 
 We assume that the rims of these beams are negligible compared to the central area. 
@@ -3567,7 +3566,7 @@ TODO: double check, the formulas below are likely to be incorrect.
 \begin{eqnarray}
    F &\overset{?}{=}& d_z - \rho \left(  d_y y_0 + d_z z_0 (1+c) \right) \\
    G &\overset{?}{=}& \rho ( y_0^2 + z_0^2 (1+c)) - 2 z_0 \\
-   H &\overset{?}{=}& - \rho ( 1 + c \, d_z^2 ) \\
+   H &\overset{?}{=}& - \rho ( d_x^2 + (1+c) \, d_z^2 ) \\
    t &=& \frac{G}{ F + \sqrt{F^2 + H G} }
 \end{eqnarray}
 
@@ -3772,6 +3771,26 @@ We assume that the macroscopic distance between image and exit pupil $R^2$ term 
 The geometric path length $t$ is inserted into the material dispersion to obtain the retardation between exit pupil and image. After that, this propagation length is subtracted from the optical path length from object to image.
 Another subtraction of the chief ray value normalizes the result.
 By didviding with the vacuum wavelength, we obtain the wave aberration in number of waves.
+
+
+\section{MTF}
+\subsection{Geometric MTF}
+stub:
+\begin{itemize}
+ \item Decide for a line orientation (sag,tan)
+ \item Start with edeg spread function
+ \item Calculate distance of each ray from edge
+ \item make a cumulative plot number of rays versus position
+ \item convert edge spread function to MTF
+\end{itemize}
+
+\subsection{FFT MTF}
+
+\subsection{Huygens MTF}
+
+
+
+
 
 
 \bibliographystyle{unsrt}
