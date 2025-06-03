@@ -79,8 +79,8 @@ class LocalCoordinates(ClassWithOptimizableVariables):
 
         globalcoordinates = np.array([0, 0, 0])
         localdecenter = np.array([0, 0, 0])
-        localrotation = np.lib.eye(3)
-        localbasis = np.lib.eye(3)
+        localrotation = np.eye(3)
+        localbasis = np.eye(3)
 
         annotations_dict = {}
         structure_dict = {}
@@ -272,7 +272,7 @@ class LocalCoordinates(ClassWithOptimizableVariables):
         self.debug("calculating parent coordinates")
 
         parentcoordinates = np.array([0, 0, 0])
-        parentbasis = np.lib.eye(3)
+        parentbasis = np.eye(3)
 
         if self.parent is not None:
             parentcoordinates = self.parent.globalcoordinates

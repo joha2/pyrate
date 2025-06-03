@@ -79,7 +79,7 @@ def rodrigues(angle, axis):
                     [axis[2], 0, -axis[0]],
                     [-axis[1], axis[0], 0]])
 
-    return np.lib.eye(3) + math.sin(angle)*mat +\
+    return np.eye(3) + math.sin(angle)*mat +\
         (1. - math.cos(angle))*np.dot(mat, mat)
 
 
